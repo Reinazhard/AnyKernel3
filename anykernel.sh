@@ -17,7 +17,7 @@ device.name4=
 device.name5=
 supported.versions=16
 supported.patchlevels=
-supported.vendorpatchlevels=2025-12
+supported.vendorpatchlevels=2025-12 -
 '; } # end properties
 
 
