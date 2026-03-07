@@ -39,3 +39,6 @@ PATCH_VBMETA_FLAG=auto;
 reset_ak;
 split_boot;
 flash_boot;
+
+# dtbo installation
+flash_generic dtbo;
