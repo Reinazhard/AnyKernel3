@@ -352,31 +352,6 @@ flash_boot() {
           for fdt in dtb extra kernel_dtb recovery_dtbo; do
             [ -f $fdt ] && magiskboot dtb $fdt patch; # remove dtb verity/avb
           done;
-        elif [ -d /data/data/me.weishu.kernelsu ] && [ "$(file_getprop $AKHOME/anykernel.sh do.modules)" == 1 ] && [ "$(file_getprop $AKHOME/anykernel.sh do.systemless)" == 1 ]; then
-          ui_print " " "KernelSU detected! Setting up for kernel helper module...";
-          comp=$(magiskboot decompress kernel 2>&1 | grep -vE 'raw|zimage' | sed -n 's;.*\[\(.*\)\];\1;p');
-          (magiskboot split $kernel || magiskboot decompress $kernel kernel) 2>/dev/null;
-          if [ $? != 0 -a "$comp" ] && $comp --help 2>/dev/null; then
-            echo "Attempting kernel unpack with busybox $comp..." >&2;
-            $comp -dc $kernel > kernel;
-          fi;
-          strings kernel > stringstmp 2>/dev/null;
-          if grep -q -E '^/data/adb/ksud$' stringstmp; then
-            touch $AKHOME/kernelsu_patched;
-            grep -E -m1 'Linux version.*#' stringstmp > $AKHOME/vertmp;
-            [ -d $RAMDISK/overlay.d ] && ui_print " " "Warning: overlay.d detected in ramdisk but not currently supported by KernelSU!";
-          else
-            ui_print " " "Warning: No KernelSU support detected in kernel!";
-          fi;
-          rm -f stringstmp;
-          if [ "$comp" ]; then
-            magiskboot compress=$comp kernel kernel.$comp;
-            if [ $? != 0 ] && $comp --help 2>/dev/null; then
-              echo "Attempting kernel repack with busybox $comp..." >&2;
-              $comp -9c kernel > kernel.$comp;
-            fi;
-            mv -f kernel.$comp kernel;
-          fi;
         else
           case $kernel in
             *-dtb) rm -f kernel_dtb;;
