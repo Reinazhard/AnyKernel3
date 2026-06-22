@@ -15,9 +15,9 @@ device.name2=raven
 device.name3=bluejay
 device.name4=
 device.name5=
-supported.versions=16
+supported.versions=16 - 17
 supported.patchlevels=
-supported.vendorpatchlevels=2025-12 -
+supported.vendorpatchlevels=2026-06 -
 '; } # end properties
 
 
